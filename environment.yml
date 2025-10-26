@@ -18,3 +18,10 @@ dependencies:
       - black
       - pytest
       - wandb
+     #SPRINT_2#
+      - kedro
+      - kedro-datasets[pandas]
+      - pyarrow
+      - wandb
+      - scikit-learn
+      
