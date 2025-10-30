@@ -7,3 +7,5 @@
 W&B: https://wandb.ai/s25983-pjatk/mushrooms?nw=nwusers25983
 
 kedro run --pipeline asi
+
+<img width="372" height="922" alt="image" src="https://github.com/user-attachments/assets/bd8a62e7-3509-4a4a-914a-7496292aff10" />
