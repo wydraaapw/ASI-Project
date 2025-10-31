@@ -20,8 +20,6 @@ dependencies:
       - wandb
      #SPRINT_2#
       - kedro
-      - kedro-datasets[pandas]
+      - kedro-datasets[pandas,tracking,pickle]
       - pyarrow
       - wandb
-      
-      
