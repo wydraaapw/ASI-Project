@@ -8,7 +8,7 @@ W&B: https://wandb.ai/s25983-pjatk/mushrooms?nw=nwusers25983
 
 Uruchom:
   
-  Wymagania:Git, Conda / Miniconda, Python 3.9–3.11
+  Wymagania: Git, Conda / Miniconda, Python 3.9–3.11
 
   1. Sklonuj repozytorium:
        git clone https://github.com/<twoje_repo>/ASI-Project.git
