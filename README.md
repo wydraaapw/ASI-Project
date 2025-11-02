@@ -11,8 +11,8 @@ Uruchom:
   Wymagania: Git, Conda / Miniconda, Python 3.9–3.11
 
   1. Sklonuj repozytorium:
-       git clone https://github.com/<twoje_repo>/ASI-Project.git
-       cd ASI-Project
+     git clone https://github.com/<twoje_repo>/ASI-Project.git
+     cd ASI-Project
   3. Utwórz środowisko Conda:
        conda env create -f environment.yml
        conda activate asi-ml
