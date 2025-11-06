@@ -12,7 +12,7 @@ Uruchom:
 
   1. Sklonuj repozytorium:
      
-     git clone https://github.com/<twoje_repo>/ASI-Project.git
+     git clone https://github.com/wydraaapw/ASI-Project.git
      
      cd ASI-Project
   3. Utwórz środowisko Conda:
