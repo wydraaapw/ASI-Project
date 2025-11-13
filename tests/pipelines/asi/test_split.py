@@ -1,4 +1,5 @@
 import pandas as pd
+
 from sprint2_kedro.pipelines.asi.nodes import split_data
 
 
@@ -16,10 +17,10 @@ def test_split_data_simple():
 
     X_train, X_test, y_train, y_test = split_data(df, test_size, random_state)
 
-    assert len(X_train) == 3
-    assert len(X_test) == 2
-    assert len(y_train) == 3
-    assert len(y_test) == 2
+    assert len(X_train) == 3  # noqa: PLR2004
+    assert len(X_test) == 2  # noqa: PLR2004
+    assert len(y_train) == 3  # noqa: PLR2004
+    assert len(y_test) == 2  # noqa: PLR2004
 
     # brak target leakate
     assert "class" not in X_train.columns

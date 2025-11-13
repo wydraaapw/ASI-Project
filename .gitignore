@@ -42,3 +42,6 @@ wandb/
 
 #.viz
 .viz/
+
+#idea
+.idea/
