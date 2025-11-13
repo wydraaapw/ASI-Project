@@ -1,9 +1,9 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import wandb
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-import wandb
 
 
 def load_raw(raw_data: pd.DataFrame) -> pd.DataFrame:

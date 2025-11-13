@@ -1,5 +1,6 @@
 from kedro.pipeline import Pipeline, node
-from .nodes import load_raw, basic_clean, split_data, train_baseline, evaluate
+
+from .nodes import basic_clean, evaluate, load_raw, split_data, train_baseline
 
 
 def create_pipeline(**kwargs):
