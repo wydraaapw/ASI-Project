@@ -22,7 +22,7 @@ Uruchom:
        conda activate asi-ml
   5. Zainstaluj projekt:
        pip install -e .
-  6. Pobierz pełny zestaw danych z 1 linijki tego pliku oraz umieść go w data/01_raw pod nazwą mushrooms.csv
+  6. Pobierz pełny zestaw danych z 1 linijki tego pliku, rozpakuj archiwum oraz umieść plik agaricus-lepiota.data w data/01_raw pod nazwą mushrooms.csv
   7. Uruchom pipeline kedro:
        kedro run --pipeline asi
 
