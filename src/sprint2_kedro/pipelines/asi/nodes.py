@@ -1,9 +1,10 @@
 import pandas as pd
-import wandb
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import f1_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+
+import wandb
 
 
 def load_raw(raw_data: pd.DataFrame) -> pd.DataFrame:
@@ -62,7 +63,7 @@ def train_baseline(X_train, y_train, params):
 
 
 def evaluate(model, X_test, y_test):
-    y_pred = model.predict_proba(X_test)[:, 1]
-    auc = roc_auc_score(y_test, y_pred)
-    wandb.log({"roc_auc": auc})
-    return {"roc_auc": auc}
+    y_pred = model.predict(X_test)
+    f1 = f1_score(y_test, y_pred)
+    wandb.log({"f1": f1})
+    return {"f1": f1}
