@@ -1,4 +1,8 @@
+import random
+
+import numpy as np
 import pandas as pd
+from autogluon.tabular import TabularPredictor
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score
 from sklearn.model_selection import train_test_split
@@ -67,3 +71,64 @@ def evaluate(model, X_test, y_test):
     f1 = f1_score(y_test, y_pred)
     wandb.log({"f1": f1})
     return {"f1": f1}
+
+
+def train_autogluon(X_train: pd.DataFrame, y_train: pd.Series, params: dict):
+
+    wandb.init(project="mushrooms", job_type="ag-train", config=params)
+
+    train_data = pd.concat([X_train, y_train], axis=1)
+
+    seed = params.get("seed", 42)
+    random.seed(seed)
+    np.random.seed(seed)
+
+    predictor = TabularPredictor(
+        label=params["label"],
+        eval_metric=params["eval_metric"],
+        problem_type=params["problem_type"],
+    ).fit(
+        train_data=train_data,
+        time_limit=params["time_limit"],
+        presets=params["presets"],
+    )
+
+    wandb.finish()
+    return predictor
+
+
+def evaluate_autogluon(
+    predictor, X_test: pd.DataFrame, y_test: pd.Series, params: dict
+):
+    wandb.init(project="mushrooms", job_type="ag-eval", config=params)
+
+    y_pred = predictor.predict(X_test)
+    metric_name = params.get("eval_metric", "f1")
+
+    if metric_name == "f1":
+        from sklearn.metrics import f1_score
+
+        score = f1_score(y_test, y_pred)
+    elif metric_name == "accuracy":
+        from sklearn.metrics import accuracy_score
+
+        score = accuracy_score(y_test, y_pred)
+    else:
+        score = None
+
+    wandb.log({metric_name: score})
+
+    try:
+        fi = predictor.feature_importance(X_test)
+        fi_path = "data/09_tracking/ag_feature_importance.csv"
+        fi.to_csv(fi_path)
+        wandb.log({"feature_importance": wandb.Table(dataframe=fi)})
+    except Exception:
+        pass
+
+    wandb.finish()
+    return {metric_name: score}
+
+
+def save_best_model(predictor):
+    return predictor
