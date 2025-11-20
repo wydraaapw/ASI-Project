@@ -23,7 +23,18 @@ Uruchom:
   5. Zainstaluj projekt:
        pip install -e .
   6. Pobierz pełny zestaw danych z 1 linijki tego pliku, rozpakuj archiwum oraz umieść plik agaricus-lepiota.data w data/01_raw pod nazwą mushrooms.csv
-  7. Uruchom pipeline kedro:
-       kedro run --pipeline asi
+  
+  7. Uruchom eksperymenty kedro z różnymi parametrami:
+     
+   
+       kedro run --params autogluon.time_limit=60
+     
+       kedro run --params autogluon.time_limit=120
+     
+       kedro run --params autogluon.presets=best_quality,autogluon.time_limit=60
 
 <img width="372" height="922" alt="image" src="https://github.com/user-attachments/assets/bd8a62e7-3509-4a4a-914a-7496292aff10" />
+
+
+# Tabela runów
+<img width="1112" height="219" alt="image" src="https://github.com/user-attachments/assets/8234949b-df94-4699-be7c-96a123297986" />
