@@ -1,16 +1,18 @@
 import random
+import shutil
 
 import numpy as np
 import pandas as pd
 from autogluon.tabular import TabularPredictor
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import f1_score
+from sklearn.metrics import accuracy_score, f1_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
 import wandb
 
 
+# Sprint 2
 def load_raw(raw_data: pd.DataFrame) -> pd.DataFrame:
     columns = [
         "class",
@@ -55,27 +57,57 @@ def split_data(df: pd.DataFrame, test_size: float, random_state: int):
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=test_size, random_state=random_state
     )
-
     return X_train, X_test, y_train, y_test
 
 
 def train_baseline(X_train, y_train, params):
-    wandb.init(project="mushrooms", job_type="train", config=params)
+
+    run = wandb.init(
+        project="mushrooms",
+        job_type="train",
+        config=params,
+        reinit=True,
+        name="Baseline_LogReg",
+    )
+    run_id = run.id
+
     model = LogisticRegression(max_iter=params.get("max_iter", 1000))
     model.fit(X_train, y_train)
-    return model
+
+    run.finish()
+    return model, run_id
 
 
-def evaluate(model, X_test, y_test):
+def evaluate(model, run_id, X_test, y_test):
+    # Loguowanie F1
+    run = wandb.init(project="mushrooms", id=run_id, resume="must", reinit=True)
+
     y_pred = model.predict(X_test)
-    f1 = f1_score(y_test, y_pred)
-    wandb.log({"f1": f1})
+    f1 = f1_score(y_test, y_pred, average="weighted")
+
+    wandb.log({"f1_baseline": f1})
+
+    run.finish()
     return {"f1": f1}
+
+
+# Sprint 3
 
 
 def train_autogluon(X_train: pd.DataFrame, y_train: pd.Series, params: dict):
 
-    wandb.init(project="mushrooms", job_type="ag-train", config=params)
+    preset_name = params.get("presets", "default")
+    run_name = f"AutoGluon_{preset_name}"
+
+    # 1. Start Runu
+    run = wandb.init(
+        project="mushrooms",
+        job_type="ag-train",
+        config=params,
+        reinit=True,
+        name=run_name,
+    )
+    run_id = run.id
 
     train_data = pd.concat([X_train, y_train], axis=1)
 
@@ -83,52 +115,54 @@ def train_autogluon(X_train: pd.DataFrame, y_train: pd.Series, params: dict):
     random.seed(seed)
     np.random.seed(seed)
 
+    ag_path = "data/06_models/ag_tmp_run"
+    try:
+        shutil.rmtree(ag_path)
+    except FileNotFoundError:
+        pass
+
     predictor = TabularPredictor(
         label=params["label"],
         eval_metric=params["eval_metric"],
         problem_type=params["problem_type"],
+        path=ag_path,
     ).fit(
         train_data=train_data,
         time_limit=params["time_limit"],
         presets=params["presets"],
     )
 
-    wandb.finish()
-    return predictor
+    art = wandb.Artifact(name=f"ag_model_{run.id}", type="model")
+    art.add_dir(ag_path)
+
+    # oznaczamy jako candidate
+    run.log_artifact(art, aliases=["candidate"])
+
+    run.finish()
+    return predictor, run_id
 
 
 def evaluate_autogluon(
-    predictor, X_test: pd.DataFrame, y_test: pd.Series, params: dict
+    predictor, run_id: str, X_test: pd.DataFrame, y_test: pd.Series, params: dict
 ):
-    wandb.init(project="mushrooms", job_type="ag-eval", config=params)
+    run = wandb.init(project="mushrooms", id=run_id, resume="must", reinit=True)
 
     y_pred = predictor.predict(X_test)
     metric_name = params.get("eval_metric", "f1")
 
-    if metric_name == "f1":
-        from sklearn.metrics import f1_score
-
-        score = f1_score(y_test, y_pred)
-    elif metric_name == "accuracy":
-        from sklearn.metrics import accuracy_score
-
+    score = 0
+    if "f1" in metric_name:
+        score = f1_score(y_test, y_pred, average="weighted")
+    elif "acc" in metric_name:
         score = accuracy_score(y_test, y_pred)
-    else:
-        score = None
 
     wandb.log({metric_name: score})
 
-    try:
-        fi = predictor.feature_importance(X_test)
-        fi_path = "data/09_tracking/ag_feature_importance.csv"
-        fi.to_csv(fi_path)
-        wandb.log({"feature_importance": wandb.Table(dataframe=fi)})
-    except Exception:
-        pass
+    test_data = pd.concat([X_test, y_test], axis=1)
+    fi = predictor.feature_importance(data=test_data)
 
-    wandb.finish()
+    wandb.log({"feature_importance": wandb.Table(dataframe=fi.reset_index())})
+    fi.to_csv("data/09_tracking/ag_feature_importance.csv")
+
+    run.finish()
     return {metric_name: score}
-
-
-def save_best_model(predictor):
-    return predictor
