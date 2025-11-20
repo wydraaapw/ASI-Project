@@ -27,3 +27,7 @@ Uruchom:
        kedro run --pipeline asi
 
 <img width="372" height="922" alt="image" src="https://github.com/user-attachments/assets/bd8a62e7-3509-4a4a-914a-7496292aff10" />
+
+
+# Tabela runów
+<img width="1112" height="219" alt="image" src="https://github.com/user-attachments/assets/8234949b-df94-4699-be7c-96a123297986" />
