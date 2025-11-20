@@ -7,18 +7,18 @@
 W&B: https://wandb.ai/s25983-pjatk/mushrooms?nw=nwusers25983
 
 Uruchom:
-  
+
   Wymagania: Git, Conda / Miniconda, Python 3.9–3.11
 
   1. Sklonuj repozytorium:
-     
+
      git clone https://github.com/wydraaapw/ASI-Project.git
-     
+
      cd ASI-Project
   3. Utwórz środowisko Conda:
-     
+
        conda env create -f environment.yml
-     
+
        conda activate asi-ml
   5. Zainstaluj projekt:
        pip install -e .

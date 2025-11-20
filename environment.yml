@@ -20,7 +20,7 @@ dependencies:
       - wandb
      #SPRINT_2#
       - kedro
-      - kedro-datasets[pandas,tracking,pickle]
+      - kedro-datasets
+      - mlflow
       - pyarrow
-      - wandb
       - autogluon==1.4

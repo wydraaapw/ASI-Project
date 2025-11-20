@@ -45,3 +45,8 @@ wandb/
 
 #idea
 .idea/
+
+/AutogluonModels
+
+ag_tmp_run/
+ag_feature_importance.csv
