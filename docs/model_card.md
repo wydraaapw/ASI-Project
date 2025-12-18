@@ -39,11 +39,11 @@ Szczegóły wybranego modelu:
 
 W&B Project: https://wandb.ai/s25983-pjatk/mushrooms/runs/fk2k69nm?nw=nwusers25983
 
-Production Artifact: s25983-pjatk/mushrooms/ag_model_fk2k69nm:v0 
+Production Artifact: s25983-pjatk/mushrooms/ag_model_fk2k69nm:v0
 https://wandb.ai/s25983-pjatk/mushrooms/artifacts/model/ag_model_fk2k69nm/latest/overview
 
 Run ID: fk2k69nm
 
-Data Version: clean_data 
+Data Version: clean_data
 
 Environment: Python 3.10+, AutoGluon 1.1, Kedro 0.19.x

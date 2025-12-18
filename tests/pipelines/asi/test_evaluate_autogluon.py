@@ -9,11 +9,9 @@ from src.sprint2_kedro.pipelines.asi.nodes import evaluate_autogluon
 def test_evaluate_autogluon(mock_wandb):
     """Test sprawdza czy evaluate_autogluon zwraca słownik z metryką w zakresie [0, 1]"""
 
-    # Mock W&B
     mock_run = MagicMock()
     mock_wandb.init.return_value = mock_run
 
-    # Mock predictor
     mock_predictor = Mock()
     mock_predictor.predict.return_value = pd.Series([0, 1, 0, 1])
     mock_predictor.feature_importance.return_value = pd.DataFrame(
