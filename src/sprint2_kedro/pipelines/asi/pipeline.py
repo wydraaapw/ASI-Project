@@ -2,12 +2,10 @@ from kedro.pipeline import Pipeline, node
 
 from .nodes import (
     basic_clean,
-    evaluate,
     evaluate_autogluon,
     load_raw,
     split_data,
     train_autogluon,
-    train_baseline,
 )
 
 
@@ -22,19 +20,19 @@ def create_pipeline(**kwargs):
                 ["X_train", "X_test", "y_train", "y_test"],
                 name="split_data",
             ),
-            # Sprint 2
-            node(
-                train_baseline,
-                ["X_train", "y_train", "params:model"],
-                ["model_baseline", "wandb_run_id_baseline"],
-                name="train_baseline",
-            ),
-            node(
-                evaluate,
-                ["model_baseline", "wandb_run_id_baseline", "X_test", "y_test"],
-                "metrics_baseline",
-                name="evaluate_baseline",
-            ),
+            # Sprint 2 zakomentowane bo teraz używamy auto gluon
+            # node(
+            #     train_baseline,
+            #     ["X_train", "y_train", "params:model"],
+            #     ["model_baseline", "wandb_run_id_baseline"],
+            #     name="train_baseline",
+            # ),
+            # node(
+            #     evaluate,
+            #     ["model_baseline", "wandb_run_id_baseline", "X_test", "y_test"],
+            #     "metrics_baseline",
+            #     name="evaluate_baseline",
+            # ),
             #  Sprint 3
             node(
                 train_autogluon,

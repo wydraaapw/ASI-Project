@@ -7,7 +7,6 @@ from autogluon.tabular import TabularPredictor
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
 
 import wandb
 
@@ -45,9 +44,10 @@ def load_raw(raw_data: pd.DataFrame) -> pd.DataFrame:
 
 def basic_clean(df: pd.DataFrame) -> pd.DataFrame:
     df = df.dropna()
-    le = LabelEncoder()
-    for col in df.columns:
-        df[col] = le.fit_transform(df[col])
+    # USUWAMY TO:
+    # le = LabelEncoder()
+    # for col in df.columns:
+    #     df[col] = le.fit_transform(df[col])
     return df
 
 
@@ -79,7 +79,6 @@ def train_baseline(X_train, y_train, params):
 
 
 def evaluate(model, run_id, X_test, y_test):
-    # Loguowanie F1
     run = wandb.init(project="mushrooms", id=run_id, resume="must", reinit=True)
 
     y_pred = model.predict(X_test)
@@ -91,15 +90,11 @@ def evaluate(model, run_id, X_test, y_test):
     return {"f1": f1}
 
 
-# Sprint 3
-
-
 def train_autogluon(X_train: pd.DataFrame, y_train: pd.Series, params: dict):
 
     preset_name = params.get("presets", "default")
     run_name = f"AutoGluon_{preset_name}"
 
-    # 1. Start Runu
     run = wandb.init(
         project="mushrooms",
         job_type="ag-train",
@@ -135,7 +130,6 @@ def train_autogluon(X_train: pd.DataFrame, y_train: pd.Series, params: dict):
     art = wandb.Artifact(name=f"ag_model_{run.id}", type="model")
     art.add_dir(ag_path)
 
-    # oznaczamy jako candidate
     run.log_artifact(art, aliases=["candidate"])
 
     run.finish()
