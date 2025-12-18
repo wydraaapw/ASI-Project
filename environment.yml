@@ -18,9 +18,14 @@ dependencies:
       - black
       - pytest
       - wandb
-     #SPRINT_2#
+     # SPRINT_2
       - kedro
       - kedro-datasets
       - mlflow
       - pyarrow
       - autogluon==1.4
+      # Sprint_4
+      - fastapi
+      - uvicorn
+      - pydantic-settings
+      - httpx
