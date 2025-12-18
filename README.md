@@ -38,3 +38,38 @@ Uruchom:
 
 # Tabela runów
 <img width="1112" height="219" alt="image" src="https://github.com/user-attachments/assets/8234949b-df94-4699-be7c-96a123297986" />
+
+#Walidacja API
+
+uruchom: 
+  1. uvicorn src.api.main:app --reload --port 8000
+     
+  2. curl http://127.0.0.1:8000/healthz
+     
+  3. curl -X POST http://127.0.0.1:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cap-shape": "x",
+    "cap-surface": "s",
+    "cap-color": "n",
+    "bruises": "t",
+    "odor": "p",
+    "gill-attachment": "f",
+    "gill-spacing": "c",
+    "gill-size": "b",
+    "gill-color": "k",
+    "stalk-shape": "e",
+    "stalk-root": "b",
+    "stalk-surface-above-ring": "s",
+    "stalk-surface-below-ring": "s",
+    "stalk-color-above-ring": "w",
+    "stalk-color-below-ring": "w",
+    "veil-type": "p",
+    "veil-color": "w",
+    "ring-number": "o",
+    "ring-type": "p",
+    "spore-print-color": "k",
+    "population": "v",
+    "habitat": "d"
+  }'
+
